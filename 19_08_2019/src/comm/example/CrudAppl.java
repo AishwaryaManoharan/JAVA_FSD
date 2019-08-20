@@ -39,6 +39,8 @@ public class CrudAppl
 			{
 				case 1:
 				{
+					try
+					{
 					PreparedStatement ps = con.prepareStatement("insert into students values(?,?)");
 					System.out.println("Enter Student's id");
 					int id=sc.nextInt();
@@ -48,23 +50,31 @@ public class CrudAppl
 					ps.setString(2, name);
 					int count=ps.executeUpdate();
 					System.out.println(count+" rows inserted");
+					}
+					catch(Exception e)
+					{
+						System.out.println("Student already added");
+					}
+					break;
 				}
 				case 2:{
 					System.out.println("Enter an ID to update");
 					int id=sc.nextInt();
 					System.out.println("Enter a name to update");
 					String name=sc.next();
-					PreparedStatement ps = con.prepareStatement("insert into students values(?) where eid=?");
-					ps.setInt(1, id);
-					ps.setString(2, name);
+					PreparedStatement ps = con.prepareStatement("update students set ename=? where eid=?");
+					
+					ps.setString(1, name);
+					ps.setInt(2, id);
 					int count=ps.executeUpdate();
 					System.out.println(count+" rows updated");
+					break;
 				}
 				case 3:
 				{
 					System.out.println("Enter an ID to delete");
 					int id =sc.nextInt();
-					PreparedStatement ps = con.prepareStatement("delete from students values(?) where eid=?");
+					PreparedStatement ps = con.prepareStatement("delete from students where eid=?");
 					ps.setInt(1, id);
 					ResultSet resultSet = ps.executeQuery();
 					System.out.println("ID Name");
@@ -72,7 +82,8 @@ public class CrudAppl
 						System.out.printf("\n%d %s", resultSet.getInt(1), resultSet.getString(2));
 					System.out.println("Row deleted");
 					
-					}}
+					}
+					break;}
 				case 4:{
 					Statement statement = con.createStatement();
 					ResultSet resultSet = statement.executeQuery("select * from students");
@@ -80,6 +91,7 @@ public class CrudAppl
 					while (resultSet.next()) {
 						System.out.printf("\n%d %s", resultSet.getInt(1), resultSet.getString(2));
 					}
+					break;
 				}
 				case 5:{
 					System.out.println("Enter the Id of row you want to display");
@@ -91,6 +103,7 @@ public class CrudAppl
 					while (resultSet.next()) {
 						System.out.printf("\n%d %s", resultSet.getInt(1), resultSet.getString(2));
 					}
+					break;
 				}
 		}
 	}
